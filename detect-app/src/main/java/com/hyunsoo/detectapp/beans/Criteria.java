@@ -20,4 +20,13 @@ public class Criteria{
     private LocalDateTime to;
     private long custId;
     private DetectPoints detectPoints;
+
+    private boolean byDefault;
+    private boolean byCustId;
+    private boolean byDetectPoints;
+    private boolean byCustIdAndDetectPoints;
+    private boolean byCustIdBetweenDates;
+    private boolean byDetectPointsBetweenDates;
+    private boolean byCustIdAndDetectPointBetweenDates;
+    private boolean byBetweenDates;
 }
