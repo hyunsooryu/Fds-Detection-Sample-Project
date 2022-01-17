@@ -45,7 +45,7 @@ public class AppConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         ModelInterceptor modelInterceptor = new ModelInterceptor(objectMapper);
         registry.addInterceptor(modelInterceptor)
-                .addPathPatterns("/detect/list");
+                .addPathPatterns("/detect");
 
     }
 

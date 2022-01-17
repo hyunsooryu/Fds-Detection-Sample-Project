@@ -28,8 +28,8 @@ public class DetectController {
 
     private final ObjectMapper objectMapper;
 
-    @GetMapping("/list")
-    public String getDetectPointList(@Condition Criteria criteria, Model model) throws JsonProcessingException {
+    @GetMapping("")
+    public String getDetectPointPage(@Condition Criteria criteria, Model model) throws JsonProcessingException {
         log.info("정렬조건 : {}", criteria.toString());
         List<DetectPoint> detectPointList = detectService.getDetectPointList(criteria);
 
@@ -38,5 +38,13 @@ public class DetectController {
 
         model.addAttribute("renderJson", detectPointList);
         return "main/board";
+    }
+
+    @ResponseBody
+    @GetMapping("/list")
+    public List<DetectPoint> getDetectPointList(@Condition Criteria criteria, Model model) throws JsonProcessingException {
+        log.info("정렬조건 : {}", criteria.toString());
+        List<DetectPoint> detectPointList = detectService.getDetectPointList(criteria);
+        return detectPointList;
     }
 }

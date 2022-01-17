@@ -2,15 +2,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>스마트 릴레이</title>
+    <title>탐지보드</title>
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="webjars/vue/2.5.16/vue.min.js"></script>
+    <script src="/webjars/vue/2.5.16/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let renderJson = [(${renderJson})];
+    </script>
     <style>
+        #searchSelect{
+            border: 2px solid gainsboro;
+        }
+        #sortSelect{
+            border: 2px solid gainsboro;
+        }
+        #search{
+            border: 2px solid gainsboro;
+        }
+        #searchBtn{
+            border: 2px solid gainsboro;
+            background-color: snow;
+        }
+
+        #seeMoreBtn{
+            background-color: white;
+            border: none;
+        }
+
         body{background:#f5f5f5}
         .text-white-50 { color: rgba(255, 255, 255, .5); }
         .bg-blue { background-color:#00b5ec; }
@@ -19,54 +42,44 @@
     </style>
 </head>
 <body>
-<main role="main" class="container bootdey.com">
+<main id="app" role="main" class="container bootdey.com">
     <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-blue rounded box-shadow">
-        <img class="mr-3" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" width="48" height="48">
+        <img class="mr-3" src="http://littledeep.com/wp-content/uploads/2020/09/magnifying-icon-style.png" alt="" width="48" height="48">
         <div class="lh-100">
-            <h6 class="mb-0 text-white lh-100">John Doe</h6>
-            <small>Messages</small>
+            <h6 v-text="title" class="mb-0 text-white lh-100"></h6>
+            <small v-text="subTitle"></small>
         </div>
     </div>
     <div class="my-3 p-3 bg-white rounded box-shadow">
-        <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates</h6>
-        <div class="media text-muted pt-3">
-            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" class="mr-2 rounded" width="32" height="32">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                <strong class="d-block text-gray-dark">@username</strong>
-                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
-            </p>
+        <h6 class="border-bottom border-gray pb-2 mb-0"><span id="sortTitle">Recent updates</span>
+            <span class="d-block text-right text-gray-dark">
+                <select name="searchYear" id="sortSelect">
+                    <option value="1">최신순<option>
+                    <option value="2">과거순</option>
+                </select>
+                <select name="searchYear" id="searchSelect">
+                    <option value="custId">고객 아이디</option>
+                    <option value="detectPointCd">탐지 코드</option>
+                </select>
+                <input name="search" id="search" type="text"/>
+                <button v-on:click="search()" v-for="search"  id="searchBtn">조회</button>
+            </span>
+        </h6>
+        <div v-for="detectData in detectList">
+            <div class="media text-muted pt-3">
+                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" class="mr-2 rounded" width="32" height="32">
+                <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <strong class="d-block text-gray-dark">고객 아이디 : {{detectData.custId}}</strong>
+                    <span class="d-block text-gray-dark">탐지 코드 : {{detectData.detectPointCd}}</span>
+                    <span class="d-block text-gray-dark">일시 : {{detectData.createdDate}}</span>
+                    {{detectData.detectPoint}}
+                </p>
+            </div>
         </div>
-        <div class="media text-muted pt-3">
-            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="" class="mr-2 rounded" width="32" height="32">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                <strong class="d-block text-gray-dark">@username</strong>
-                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
-            </p>
-        </div>
-        <div class="media text-muted pt-3">
-            <img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="" class="mr-2 rounded" width="32" height="32">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                <strong class="d-block text-gray-dark">@username</strong>
-                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
-            </p>
-        </div>
-        <div class="media text-muted pt-3">
-            <img src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="" class="mr-2 rounded" width="32" height="32">
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                <strong class="d-block text-gray-dark">@username</strong>
-                Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
-            </p>
-        </div>
-        <small class="d-block text-right mt-3">
-            <a href="#">All messages</a>
+        <small class="d-block text-center mt-3">
+            <button id="seeMoreBtn" v-on:click="seeMore()">더보기</button>
         </small>
     </div>
 </main>
-<div id="">
-</div>
-<script>
-    let renderJson = [(${renderJson})];
-    //TODO VUE.JS 활용 해당 renderJson으로 탐색 게시판 만들기
-
-</script>
+<script src="/static/detectBoardVueComp.js"></script>
 </body>
