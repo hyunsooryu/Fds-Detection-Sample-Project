@@ -23,10 +23,10 @@ public class ModelInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        List<DetectPoint> detectPointList = (List<DetectPoint>)modelAndView.getModel().getOrDefault("renderJson", null);
-        if(!Objects.isNull(detectPointList)){
+        Object obj = modelAndView.getModel().getOrDefault("renderJson", null);
+        if(!Objects.isNull(obj)){
             modelAndView.getModel().remove("renderJson");
-            String renderJson = objectMapper.writeValueAsString(detectPointList);
+            String renderJson = objectMapper.writeValueAsString(obj);
             modelAndView.getModel().put("renderJson", renderJson);
         }
     }

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -26,7 +27,6 @@ public class StatusServiceImpl implements StatusService {
     public boolean updateStatus(Status status) {
         boolean updatedResult = false;
         try {
-            customerCacheRepository.save(StatusUtil.convertToCustomerStatus(status));
             statusRepository.save(status);
             updatedResult = true;
         }catch (Exception e){
@@ -45,7 +45,7 @@ public class StatusServiceImpl implements StatusService {
             log.info("get statusByCustId : cache miss");
             log.info("go to DB");
             status = statusRepository.findById(custId).orElse(null);
-            if(status != null){
+            if(!Objects.isNull(status)){
                 log.info("save cache, {}", status.toString());
                 customerCacheRepository.save(StatusUtil.convertToCustomerStatus(status));
             }
