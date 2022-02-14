@@ -15,6 +15,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.convert.Jsr310Converters;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -30,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 
 @Configuration
@@ -39,6 +41,22 @@ public class AppConfig implements WebMvcConfigurer {
     private static final DateTimeFormatter dateTimeFormatter =  DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
     private final ObjectMapper objectMapper;
+
+
+    /**
+     * Kafka Log 에대한 데이터를 이벤트로 발행
+     * 해당 이벤트를 처리할 Thread Pool Task Executor
+     */
+    @Bean
+    Executor kafkaAsyncThreadPoolTaskExecutor(){
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setCorePoolSize(20);
+        taskExecutor.setMaxPoolSize(20);
+        taskExecutor.setQueueCapacity(Integer.MAX_VALUE);
+        taskExecutor.setThreadNamePrefix("kafkaAsyncThreadPoolTaskExecutor-");
+        taskExecutor.initialize();
+        return taskExecutor;
+    }
 
 
     @Override

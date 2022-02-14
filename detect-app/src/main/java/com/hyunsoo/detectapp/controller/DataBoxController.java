@@ -4,6 +4,7 @@ import com.hyunsoo.detectapp.beans.DataBox;
 import com.hyunsoo.detectapp.beans.DetectApiException;
 import com.hyunsoo.detectapp.beans.Menu;
 import com.hyunsoo.detectapp.beans.Status;
+import com.hyunsoo.detectapp.kafka.LogPublisher;
 import com.hyunsoo.detectapp.service.LoanService;
 import com.hyunsoo.detectapp.service.StatusService;
 import com.hyunsoo.detectapp.service.TransferService;
@@ -31,6 +32,8 @@ public class DataBoxController {
 
     private final LoanService loanService;
 
+    private final LogPublisher logPublisher;
+
     @PostMapping("/data")
     //TODO KAFKA 서버에 모든 데이터를 보내도록 한다. - KAFKA - ELASTIC SEARCH
     /**
@@ -38,6 +41,9 @@ public class DataBoxController {
      * 로그 수집
      */
     public DataBox insertDataBox(@RequestBody DataBox dataBox){
+
+        //logging - 이벤트 발행
+        logPublisher.publish(dataBox);
 
         //1. 메뉴가 로그인 일 때
         if(Menu.LOGIN == dataBox.getMenu()) {
