@@ -28,4 +28,13 @@ public class Scenario {
     private String workYn;
     @Column(name= "SCENARIO_NAME")
     private String scenarioName;
+
+    @Transient
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 MM월 dd일 HH시 mm분", timezone = "Asia/Seoul")
+    private LocalDateTime startTime;
+
+    @Transient
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy년 MM월 dd일 HH시 mm분", timezone = "Asia/Seoul")
+    private LocalDateTime endTime;
+
 }

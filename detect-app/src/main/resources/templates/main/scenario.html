@@ -58,7 +58,6 @@
         }
 
 
-
         body{background:#f5f5f5}
         .text-white-50 { color: rgba(255, 255, 255, .5); }
         .bg-blue { background-color:#00b5ec; }
@@ -77,8 +76,8 @@
     </div>
     <span class="d-block text-right text-gray-dark">
         <ul id="nav">
-            <li><a href="#">대시보드</a></li>
-            <li><a href="#">시나리오 관리</a></li>
+            <li><a href="/detect">대시보드</a></li>
+            <li><a href="/scenario">시나리오 관리</a></li>
             <li><a href="#">데이터 생성</a></li>
         </ul>
     </span>
@@ -97,14 +96,14 @@
                 <button v-on:click="search()" v-for="search"  id="searchBtn">조회</button>
             </span>
         </h6>
-        <div v-for="detectData in detectList">
+        <div v-for="scenario in scenarioList">
             <div class="media text-muted pt-3">
-                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="" class="mr-2 rounded" width="32" height="32">
-                <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                    <strong class="d-block text-gray-dark">고객 아이디 : {{detectData.custId}}</strong>
-                    <span class="d-block text-gray-dark">탐지 코드 : {{detectData.detectPointCd}}</span>
-                    <span class="d-block text-gray-dark">일시 : {{detectData.createdDate}}</span>
-                    {{detectData.detectPoint}}
+                <img src="https://t1.daumcdn.net/cfile/tistory/21550F3752369CD924" alt="" class="mr-2 rounded" width="32" height="32">
+                <p class="media-body pb-3 mb-0 small lh-125 border-bottom bordehttps://t1.daumcdn.net/cfile/tistory/21550F3752369CD924r-gray">
+                    <strong class="d-block text-gray-dark">시나리오 아이디 : {{scenario.scenarioId}}</strong>
+                    <span class="d-block text-gray-dark">시나리오 이름 : {{scenario.scenarioName}}</span>
+                    <span class="d-block text-gray-dark">시작 : {{scenario.startTime}}</span>
+                    <span class="d-block text-gray-dark">종료 : {{scenario.endTime}}</span>
                 </p>
             </div>
         </div>
@@ -113,5 +112,5 @@
         </small>
     </div>
 </main>
-<script src="/static/detectBoardVueComp.js"></script>
+<script src="/static/scenarioBoardVueComp.js"></script>
 </body>

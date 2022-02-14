@@ -21,7 +21,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/detect")
+@RequestMapping(value = {"/detect"})
 public class DetectController {
 
     private final DetectService detectService;

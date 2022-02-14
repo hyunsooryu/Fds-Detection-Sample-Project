@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -101,13 +102,15 @@ public class ScenarioServiceImpl implements ScenarioService {
 
     @Override
     public List<Scenario> getScenarioList() {
+
         List<Scenario> scenarioList = Collections.EMPTY_LIST;
+
         try {
             scenarioList = scenarioRepository.findAll();
         }catch (Exception e){
             log.error("시나리오 리스트 DB 조회 중 에러", e);
         }
-        return scenarioList;
+        return convertScenarioTimeToScenario(scenarioList);
     }
 
     @Override
@@ -124,5 +127,14 @@ public class ScenarioServiceImpl implements ScenarioService {
             }
         }
         return false;
+    }
+
+    private static List<Scenario> convertScenarioTimeToScenario(List<Scenario> scenarios){
+        return scenarios.stream()
+                .map(scenario -> {
+                    scenario.setStartTime(scenario.getFrom());
+                    scenario.setEndTime(scenario.getTo());
+                    return scenario;
+                }).collect(Collectors.toList());
     }
 }

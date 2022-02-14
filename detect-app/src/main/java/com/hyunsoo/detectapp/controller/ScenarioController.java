@@ -7,6 +7,7 @@ import com.hyunsoo.detectapp.validator.ScenarioValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +32,12 @@ public class ScenarioController {
 
     private final ScenarioValidator scenarioValidator;
 
+    @ResponseBody
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Scenario> getScenarioList(){
+        return scenarioService.getScenarioList();
+    }
+
     @GetMapping("")
     public String getDetectPointPage(@Condition Criteria criteria, Model model) throws JsonProcessingException {
         List<Scenario> scenarioList = scenarioService.getScenarioList();
@@ -52,9 +59,11 @@ public class ScenarioController {
         }
 
         scenarioService.insertScenario(scenario);
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 Collections.singletonMap("message","등록완료")
         );
+
     }
 
     @ExceptionHandler(value = ScenarioApiException.class)
@@ -68,7 +77,5 @@ public class ScenarioController {
     void initBinder(WebDataBinder webDataBinder){
         webDataBinder.addValidators(scenarioValidator);
     }
-
-
 
 }
